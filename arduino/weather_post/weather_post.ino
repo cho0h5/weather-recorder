@@ -34,7 +34,17 @@ void loop() {
     HTTPClient http;
 
     if (http.begin(client, "http://192.168.127.13:8080/headers")) {
-      int httpCode = http.GET();
+      // data
+      float dht22_Humi = dht.readHumidity();
+      float dht22_Temp = dht.readTemperature();
+      float bmp180_Temp = bmp.readTemperature();
+      float bmp180_Pres = bmp.readPressure();
+  
+      String data = generateJSON(dht22_Humi, dht22_Temp,
+        bmp180_Temp, bmp180_Pres);
+
+      // http post
+      int httpCode = http.POST(data);
       Serial.printf("httpCode: %d\n", httpCode);
       http.end();
     } else {
@@ -44,4 +54,16 @@ void loop() {
   }
 
   delay(2000);
+}
+
+String generateJSON(float dht22_Humi, float dht22_Temp,
+  float bmp180_Temp, float bmp180_Pres) {
+  String data = "{";
+  data += "\"dht22_Humi\":" + (String)dht22_Humi + ",";
+  data += "\"dht22_Temp\":" + (String)dht22_Temp + ",";
+  data += "\"bmp180_Temp\":" + (String)bmp180_Temp + ",";
+  data += "\"bmp180_Pres\":" + (String)bmp180_Pres + "";
+  data += "}";
+
+  return data;
 }
