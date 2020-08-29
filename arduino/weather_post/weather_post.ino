@@ -33,7 +33,7 @@ void loop() {
     WiFiClient client;
     HTTPClient http;
 
-    if (http.begin(client, "http://192.168.127.13:8080/input")) {
+    if (http.begin(client, "http://192.168.127.2:8080/input")) {
       // data
       float dht22_Humi = dht.readHumidity();
       float dht22_Temp = dht.readTemperature();
