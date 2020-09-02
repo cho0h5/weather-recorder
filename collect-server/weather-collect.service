@@ -3,8 +3,8 @@ Description=weather-recoder input
 After=network.target
 
 [Service]
-WorkingDirectory=/home/alarm/running-project/weather-recorder/server
-ExecStart=/home/alarm/running-project/weather-recorder/server/main
+WorkingDirectory=/home/alarm/running-project/weather-recorder/collect-server
+ExecStart=/home/alarm/running-project/weather-recorder/collect-server/collect-server
 
 [Install]
 WantedBy=multi-user.target
