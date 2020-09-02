@@ -1,0 +1,10 @@
+Unit]
+Description=weather-indicater
+After=network.target
+
+[Service]
+WorkingDirectory=/home/alarm/running-project/weather-recorder/indicate-server
+ExecStart=/home/alarm/running-project/weather-recorder/indicate-server/indicate-server
+
+[Install]
+WantedBy=multi-user.target
