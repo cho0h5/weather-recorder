@@ -26,7 +26,9 @@ func parseJSON(rawData string) Data {
 }
 
 func isWorking(rawDate string) bool {
-    prevDate, _ := time.Parse("2006-01-02 15:04:05", rawDate)
+    loc, _ := time.LoadLocation("Asia/Seoul")
+
+    prevDate, _ := time.ParseInLocation("2006-01-02 15:04:05", rawDate, loc)
     nowDate := time.Now()
     term := nowDate.Sub(prevDate)
 
