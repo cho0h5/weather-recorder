@@ -2,6 +2,7 @@ package main
 
 import (
         "os"
+        "time"
         "encoding/json"
 )
 
@@ -22,4 +23,14 @@ func parseJSON(rawData string) Data {
     json.Unmarshal([]byte(rawData), &data)
 
     return data
+}
+
+func isWorking(rawDate string) bool {
+    prevDate, _ := time.Parse("2006-01-02 15:04:05", rawDate)
+    nowDate := time.Now()
+    term := nowDate.Sub(prevDate)
+
+    state := term < time.Second * 3
+
+    return state
 }

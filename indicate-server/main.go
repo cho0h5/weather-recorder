@@ -14,6 +14,7 @@ type Data struct {
     Bmp180_Temp float32 `json:"bmp180_Temp"`
     Bmp180_Pres float32 `json:"bmp180_Pres"`
     Date string
+    IsWorking bool
 }
 
 func dashboard(w http.ResponseWriter, r *http.Request) {
@@ -24,6 +25,7 @@ func dashboard(w http.ResponseWriter, r *http.Request) {
 
     data := parseJSON(rawData)
     data.Date = rawDate
+    data.IsWorking = isWorking(rawDate)
 
     t, _ := template.ParseFiles("dashboard.html")
     t.Execute(w, data)
