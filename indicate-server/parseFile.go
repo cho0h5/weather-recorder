@@ -3,6 +3,7 @@ package main
 import (
         "os"
         "time"
+        "strings"
         "encoding/json"
 )
 
@@ -35,4 +36,17 @@ func isWorking(rawDate string) bool {
     state := term < time.Second * 3
 
     return state
+}
+
+func parseData() Data {
+    lastLine := strings.TrimSpace(readLastLine(dataFileName))
+
+    rawDate := lastLine[:19]
+    rawData := lastLine[20:]
+
+    data := parseJSON(rawData)
+    data.Date = rawDate
+    data.IsWorking = isWorking(rawDate)
+
+    return data
 }
