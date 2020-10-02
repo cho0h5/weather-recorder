@@ -27,6 +27,7 @@ func dashboard(w http.ResponseWriter, r *http.Request) {
 func json_data(w http.ResponseWriter, r *http.Request) {
     data := parseData()
     enc := json.NewEncoder(w)
+    w.Header().Set("Content-Type", "application/json")
     enc.Encode(data)
 }
 
