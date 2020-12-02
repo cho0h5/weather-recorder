@@ -1,6 +1,7 @@
 .DS_Store
 *.swp
 data.txt
+data.db
 
 collect-server/collect-server
 indicate-server/indicate-server

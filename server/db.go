@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"database/sql"
@@ -11,7 +11,7 @@ type dbManager struct {
 	db *sql.DB
 }
 
-func initializeDB() (db *sql.DB) {
+func initializeDB() (dm dbManager) {
 	// connect (or create) db
 	db, err := sql.Open("sqlite3", "./data.db")
 	if err != nil {
@@ -19,20 +19,26 @@ func initializeDB() (db *sql.DB) {
 	}
 
 	// create table
-	db.Exec("CREATE TABLE sensor_data (" +
-		"id INT PRIMARY KEY AUTO_INCREMENT," +
+	_, err = db.Exec("CREATE TABLE sensor_data (" +
+		"id INTEGER PRIMARY KEY," +
 		"dht22_Humi DECIMAL(4,2) NOT NULL," +
 		"dht22_Temp DECIMAL(4,2) NOT NULL," +
 		"bmp180_Temp DECIMAL(4,2) NOT NULL," +
 		"bmp180_Pres DECIMAL(6,2) NOT NULL," +
 		"datetime DATETIME NOT NULL)")
+	if err != nil {
+		log.Print(err)
+		log.Printf("\n")
+	}
+
+	dm = dbManager{db}
 
 	return
 }
 
 func (dm dbManager) addData(data Data) {
-	query := fmt.Sprintf("INSERT INTO sensor_data (dht22_Humi, dht22_Temp, bmp180_Temp, bmp180_Pres)"+
-		"VALUES (%f, %f, %f, %f, NOW())", data.Dht22_Humi, data.Dht22_Temp, data.Bmp180_Temp, data.Bmp180_Pres)
+	query := fmt.Sprintf("INSERT INTO sensor_data (dht22_Humi, dht22_Temp, bmp180_Temp, bmp180_Pres, datetime)"+
+		"VALUES (%f, %f, %f, %f, datetime('now'))", data.Dht22_Humi, data.Dht22_Temp, data.Bmp180_Temp, data.Bmp180_Pres)
 	_, err := dm.db.Exec(query)
 	if err != nil {
 		log.Print(err)
@@ -40,6 +46,22 @@ func (dm dbManager) addData(data Data) {
 	}
 }
 
-func (dm dbManager) getRecentDate(n int) {
+func (dm dbManager) getRecentDate(n int) (data Data) {
+	query := fmt.Sprintf("SELECT * FROM sensor_data ORDER BY id DESC LIMIT %d", n)
 
+	rows, err := dm.db.Query(query)
+	defer rows.Close()
+	if err != nil {
+		log.Print(err)
+		log.Printf("\n")
+	}
+
+	for rows.Next() {
+		err := rows.Scan(&data.Id, &data.Dht22_Humi, &data.Dht22_Temp, &data.Bmp180_Temp, &data.Bmp180_Pres, &data.Datetime)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	return
 }
