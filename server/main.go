@@ -1,26 +1,36 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
+	"net/http"
 )
 
-type Data struct {
-	Id          int     `json:"id"`
-	Dht22_Humi  float32 `json:"dht22_Humi"`
-	Dht22_Temp  float32 `json:"dht22_Temp"`
-	Bmp180_Temp float32 `json:"bmp180_Temp"`
-	Bmp180_Pres float32 `json:"bmp180_Pres"`
-	Datetime    string  `json:"datetime"`
+var dm dbManager
+
+func input(w http.ResponseWriter, r *http.Request) {
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+
+	fmt.Fprintln(w, string(body))
+
+	var data Data
+	err := json.Unmarshal(body, &data)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(data)
+	dm.addData(data)
 }
 
 func main() {
-	dm := initializeDB()
+	dm = initializeDB()
 
-	//oneData := Data{-1, 1.1, 2.2, 3.3, 4.4, ""}
-	//dm.addData(oneData)
-	//oneData = Data{-1, 1.1, 2.2, 3.3, 4.4, ""}
-	//dm.addData(oneData)
+	http.HandleFunc("/ws", webSocket)
+	http.HandleFunc("/input", input)
+	http.Handle("/", http.FileServer(http.Dir(".")))
 
-	data := dm.getRecentDate(1000)
-	fmt.Println(data)
+	http.ListenAndServe(":8080", nil)
 }

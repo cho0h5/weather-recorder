@@ -7,10 +7,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type dbManager struct {
-	db *sql.DB
-}
-
 func initializeDB() (dm dbManager) {
 	// connect (or create) db
 	db, err := sql.Open("sqlite3", "./data.db")
