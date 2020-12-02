@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/gorilla/websocket"
-	"github.com/spf13/cast"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/websocket"
 )
 
 var upgrader = websocket.Upgrader{}
@@ -38,9 +38,9 @@ func webSocket(w http.ResponseWriter, r *http.Request) {
 			log.Println("someone connected")
 
 		case "recentData":
-			receiveData := cast.ToStringMapInt(obj["data"])
+			log.Println("request recent Data", obj["n"])
 
-			data := dm.getRecentDate(receiveData["n"])
+			data := dm.getRecentDate(int(obj["n"].(float64)))
 
 			b, _ := json.Marshal(data)
 			err = client.WriteMessage(messageType, b)

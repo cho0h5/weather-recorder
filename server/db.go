@@ -3,7 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/labstack/gommon/log"
+	"log"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -37,8 +38,7 @@ func (dm dbManager) addData(data Data) {
 		"VALUES (%f, %f, %f, %f, datetime('now'))", data.Dht22_Humi, data.Dht22_Temp, data.Bmp180_Temp, data.Bmp180_Pres)
 	_, err := dm.db.Exec(query)
 	if err != nil {
-		log.Print(err)
-		log.Printf("\n")
+		log.Println(err)
 	}
 }
 
@@ -48,8 +48,7 @@ func (dm dbManager) getRecentDate(n int) (data []Data) {
 	rows, err := dm.db.Query(query)
 	defer rows.Close()
 	if err != nil {
-		log.Print(err)
-		log.Printf("\n")
+		log.Println(err)
 	}
 
 	var tempData Data
@@ -61,7 +60,7 @@ func (dm dbManager) getRecentDate(n int) (data []Data) {
 			&tempData.Bmp180_Pres,
 			&tempData.Datetime)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		}
 		data = append(data, tempData)
 	}

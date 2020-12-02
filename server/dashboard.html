@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
+    />
+    <title>Weather Dashboard</title>
+  </head>
+
+  <body>
+    <section class="hero {{if .IsWorking}} is-info {{else}} is-danger {{end}}">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Weather Dashboard</h1>
+          <h2 class="subtitle">
+            {{if .IsWorking}} isWorking {{else}} isNotWorking {{end}} {{.Date}}
+          </h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Dht22_Humi</p>
+            <p class="title" id="dht22_Humi"></p>
+            <progress
+              class="progress {{if .IsWorking}} is-info {{else}} is-danger {{end}}"
+              value="{{.Dht22_Humi}}"
+              max="100"
+            >
+              {{.Dht22_Humi}}%
+            </progress>
+          </div>
+        </div>
+
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Dht22_Temp</p>
+            <p class="title" id="dht22_Temp"></p>
+          </div>
+        </div>
+
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Bmp180_Temp</p>
+            <p class="title" id="bmp180_Temp"></p>
+          </div>
+        </div>
+
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Bmp180_Pres</p>
+            <p class="title" id="bmp180_Pres"></p>
+          </div>
+        </div>
+      </nav>
+    </section>
+
+    <script src="ws.js"></script>
+    <script src="display.js"></script>
+  </body>
+</html>
