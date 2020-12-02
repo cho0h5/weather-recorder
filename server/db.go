@@ -46,7 +46,7 @@ func (dm dbManager) addData(data Data) {
 	}
 }
 
-func (dm dbManager) getRecentDate(n int) (data Data) {
+func (dm dbManager) getRecentDate(n int) (data []Data) {
 	query := fmt.Sprintf("SELECT * FROM sensor_data ORDER BY id DESC LIMIT %d", n)
 
 	rows, err := dm.db.Query(query)
@@ -56,11 +56,18 @@ func (dm dbManager) getRecentDate(n int) (data Data) {
 		log.Printf("\n")
 	}
 
+	var tempData Data
 	for rows.Next() {
-		err := rows.Scan(&data.Id, &data.Dht22_Humi, &data.Dht22_Temp, &data.Bmp180_Temp, &data.Bmp180_Pres, &data.Datetime)
+		err := rows.Scan(&tempData.Id,
+			&tempData.Dht22_Humi,
+			&tempData.Dht22_Temp,
+			&tempData.Bmp180_Temp,
+			&tempData.Bmp180_Pres,
+			&tempData.Datetime)
 		if err != nil {
 			fmt.Println(err)
 		}
+		data = append(data, tempData)
 	}
 
 	return

@@ -16,12 +16,11 @@ type Data struct {
 func main() {
 	dm := initializeDB()
 
-	data := dm.getRecentDate(1)
-	fmt.Println(data)
+	//oneData := Data{-1, 1.1, 2.2, 3.3, 4.4, ""}
+	//dm.addData(oneData)
+	//oneData = Data{-1, 1.1, 2.2, 3.3, 4.4, ""}
+	//dm.addData(oneData)
 
-	data = Data{-1, 1.1, 2.2, 3.3, 4.4, ""}
-	dm.addData(data)
-	//
-	//data = dm.getRecentDate(1)
-	//fmt.Println(data)
+	data := dm.getRecentDate(1000)
+	fmt.Println(data)
 }
