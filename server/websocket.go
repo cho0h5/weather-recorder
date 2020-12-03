@@ -23,7 +23,7 @@ func webSocket(w http.ResponseWriter, r *http.Request) {
 		// receive
 		messageType, message, err := client.ReadMessage()
 		if err != nil {
-			log.Println(err)
+			log.Println("somwone disconnected")
 			break
 		}
 

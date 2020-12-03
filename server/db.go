@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -62,8 +63,23 @@ func (dm dbManager) getRecentDate(n int) (data []Data) {
 		if err != nil {
 			log.Println(err)
 		}
+
+		recentTime, _ := time.Parse(time.RFC3339, tempData.Datetime)
+
+		tempData.IsWorking = checkIsWorking(recentTime)
+
 		data = append(data, tempData)
 	}
 
 	return
+}
+
+func checkIsWorking(recentTime time.Time) bool {
+	currentTime := time.Now()
+	deltaTime := currentTime.Sub(recentTime)
+
+	if deltaTime < time.Second*3 {
+		return true
+	}
+	return false
 }

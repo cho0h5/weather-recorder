@@ -8,13 +8,11 @@
   </head>
 
   <body>
-    <section class="hero {{if .IsWorking}} is-info {{else}} is-danger {{end}}">
+    <section class="hero {{if .IsWorking}} is-info {{else}} is-danger {{end}}" id="header-section">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Weather Dashboard</h1>
-          <h2 class="subtitle">
-            {{if .IsWorking}} isWorking {{else}} isNotWorking {{end}} {{.Date}}
-          </h2>
+          <h2 class="subtitle" id="subtitle"></h2>
         </div>
       </div>
     </section>
@@ -27,11 +25,10 @@
             <p class="title" id="dht22_Humi"></p>
             <progress
               class="progress {{if .IsWorking}} is-info {{else}} is-danger {{end}}"
-              value="{{.Dht22_Humi}}"
+              value=""
               max="100"
-            >
-              {{.Dht22_Humi}}%
-            </progress>
+              id="dht22_Humi_progress"
+            ></progress>
           </div>
         </div>
 

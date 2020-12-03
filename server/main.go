@@ -20,6 +20,7 @@ func input(w http.ResponseWriter, r *http.Request) {
 	err := json.Unmarshal(body, &data)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 	log.Println(data)
 	dm.addData(data)

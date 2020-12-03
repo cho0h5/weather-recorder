@@ -9,6 +9,7 @@ type Data struct {
 	Bmp180_Temp float32 `json:"bmp180_Temp"`
 	Bmp180_Pres float32 `json:"bmp180_Pres"`
 	Datetime    string  `json:"datetime"`
+	IsWorking   bool    `json:"isWorking"`
 }
 
 type dbManager struct {
