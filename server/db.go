@@ -36,7 +36,7 @@ func initializeDB() (dm dbManager) {
 
 func (dm dbManager) addData(data Data) {
 	query := fmt.Sprintf("INSERT INTO sensor_data (dht22_Humi, dht22_Temp, bmp180_Temp, bmp180_Pres, datetime)"+
-		"VALUES (%f, %f, %f, %f, datetime('now'))", data.Dht22_Humi, data.Dht22_Temp, data.Bmp180_Temp, data.Bmp180_Pres)
+		"VALUES (%f, %f, %f, %f, datetime('now', 'localtime'))", data.Dht22_Humi, data.Dht22_Temp, data.Bmp180_Temp, data.Bmp180_Pres)
 	_, err := dm.db.Exec(query)
 	if err != nil {
 		log.Println(err)
