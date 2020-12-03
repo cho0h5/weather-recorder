@@ -1,7 +1,7 @@
 # weather-recorder
 
 ## arduino/
-esp8266 + http + bmp180 + dht22
+esp8266 (with http, bmp180 and dht22)
 
 ## server/
-golang + net/http + log
+golang (with websocket + sqlite)
